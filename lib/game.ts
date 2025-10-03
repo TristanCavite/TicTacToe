@@ -1,7 +1,6 @@
-// lib/game.ts
 export type Player = 'X' | 'O';
 export type Cell = Player | null;
-export type Board = Cell[]; // length 9
+export type Board = Cell[]; 
 
 export const createEmptyBoard = (): Board => Array(9).fill(null);
 
@@ -13,16 +12,18 @@ export function makeMove(board: Board, index: number, player: Player): Board {
   return copy;
 }
 
-const WIN_LINES: number[][] = [
-  [0,1,2],[3,4,5],[6,7,8],
-  [0,3,6],[1,4,7],[2,5,8],
-  [0,4,8],[2,4,6]
+const WIN_LINES: [number, number, number][] = [
+  [0, 1, 2], [3, 4, 5], [6, 7, 8],
+  [0, 3, 6], [1, 4, 7], [2, 5, 8],
+  [0, 4, 8], [2, 4, 6]
 ];
 
 export function checkWinner(board: Board): { winner: Player | null; line?: number[] } {
   for (const line of WIN_LINES) {
-    const [a,b,c] = line;
-    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+    const [a, b, c] = line;
+    // explicit null-checks (safer & clearer)
+    if (board[a] !== null && board[b] !== null && board[c] !== null &&
+        board[a] === board[b] && board[a] === board[c]) {
       return { winner: board[a] as Player, line };
     }
   }
@@ -34,5 +35,9 @@ export function isDraw(board: Board): boolean {
 }
 
 export function availableMoves(board: Board): number[] {
-  return board.map((v,i) => v === null ? i : -1).filter(i => i >= 0);
+  const moves: number[] = [];
+  for (let i = 0; i < board.length; i++) {
+    if (board[i] === null) moves.push(i);
+  }
+  return moves;
 }
