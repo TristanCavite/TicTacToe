@@ -16,7 +16,7 @@
         aria-label="Tic Tac Toe board"
         class="grid grid-cols-3 gap-4"
       >
-        <Square
+        <GameSquare
           v-for="(cell, i) in board"
           :key="i"
           :index="i"
@@ -29,8 +29,8 @@
 
       <div class="mt-5">
         <button
-          @click="reset"
           class="px-4 py-2 rounded-md bg-gradient-to-r from-green-400 to-blue-500 text-white hover:cursor-pointer hover:from-green-500 hover:to-blue-600 transition"
+          @click="reset"
         >
           Reset
         </button>
@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import Square from "~/components/Square.vue";
+import GameSquare from "~/components/GameSquare.vue";
 import { useGame } from "~/composables/useGame";
 
 const { board, current, winner, winningLine, play, reset } = useGame();
